@@ -58,6 +58,7 @@ namespace Engine
             }
             return false;
         }
+
         public bool CompletedThisQuest(Quest quest)
         {
             foreach (PlayerQuest playerQuest in Quests)

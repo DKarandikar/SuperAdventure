@@ -25,10 +25,7 @@ namespace SuperAdventure
             MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
             _player.Inventory.Add(new InventoryItem(World.ItemByID(World.ITEM_ID_RUSTY_SWORD), 1));
 
-            lblHitPoints.Text = _player.CurrentHitPoints.ToString() + "/" + _player.MaximumHitPoints.ToString();
-            lblGold.Text = _player.Gold.ToString();
-            lblExperience.Text = _player.ExperiencePoints.ToString();
-            lblLevel.Text = _player.Level.ToString();
+            UpdateUI();
         }
 
         private void btnNorth_Click(object sender, EventArgs e)
@@ -78,9 +75,6 @@ namespace SuperAdventure
 
             // Completely heal the player
             _player.CurrentHitPoints = _player.MaximumHitPoints;
-
-            // Update Hit Points in UI
-            lblHitPoints.Text = _player.CurrentHitPoints.ToString() + "/" + _player.MaximumHitPoints.ToString();
 
             // Does the location have a quest?
             if (newLocation.QuestAvailableHere != null)
@@ -186,16 +180,8 @@ namespace SuperAdventure
                 btnUsePotion.Visible = false;
             }
 
-            // Refresh player's inventory list
-            UpdateInventoryListInUI();
-            // Refresh player's quest list
-            UpdateQuestListInUI();
-            // Refresh player's weapons combobox
-            UpdateWeaponListInUI();
-            // Refresh player's potions combobox
-            UpdatePotionListInUI();
-
-        ScrollToBottomOfMessages();
+            // Refresh UI
+            UpdateUI();
         }
 
         private void UpdateInventoryListInUI()
@@ -358,15 +344,6 @@ namespace SuperAdventure
                     }
                 }
 
-                // Refresh player information and inventory controls
-                lblHitPoints.Text = _player.CurrentHitPoints.ToString() + "/" + _player.MaximumHitPoints.ToString();
-                lblGold.Text = _player.Gold.ToString();
-                lblExperience.Text = _player.ExperiencePoints.ToString();
-                lblLevel.Text = _player.Level.ToString();
-
-                UpdateInventoryListInUI();
-                UpdateWeaponListInUI();
-                UpdatePotionListInUI();
 
                 // Add a blank line to the messages box, just for appearance.
                 rtbMessages.Text += Environment.NewLine;
@@ -387,19 +364,14 @@ namespace SuperAdventure
                 // Subtract damage from player
                 _player.CurrentHitPoints -= damageToPlayer;
 
-                // Refresh player data in UI
-                lblHitPoints.Text = _player.CurrentHitPoints.ToString() + "/" + _player.MaximumHitPoints.ToString();
 
                 if (_player.CurrentHitPoints <= 0)
                 {
-                    // Display message
-                    rtbMessages.Text += "The " + _currentMonster.Name + " killed you." + Environment.NewLine;
-
-                    // Move player to "Home"
-                    MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
+                    Gameover();
                 }
             }
-            ScrollToBottomOfMessages();
+            // Refresh the UI
+            UpdateUI();
         }
 
         private void btnUsePotion_Click(object sender, EventArgs e)
@@ -442,18 +414,11 @@ namespace SuperAdventure
 
             if (_player.CurrentHitPoints <= 0)
             {
-                // Display message
-                rtbMessages.Text += "The " + _currentMonster.Name + " killed you." + Environment.NewLine;
-
-                // Move player to "Home"
-                MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
+                Gameover();
             }
 
             // Refresh player data in UI
-            lblHitPoints.Text = _player.CurrentHitPoints.ToString() + "/" + _player.MaximumHitPoints.ToString();
-            UpdateInventoryListInUI();
-            UpdatePotionListInUI();
-            ScrollToBottomOfMessages();
+            UpdateUI();
 
 
 
@@ -465,7 +430,45 @@ namespace SuperAdventure
             rtbMessages.ScrollToCaret();
         }
 
+        private void Gameover()
+        {
+            // Display message
+            rtbMessages.Text += "The " + _currentMonster.Name + " killed you." + Environment.NewLine;
+            rtbMessages.Text += "Let's begin again." + Environment.NewLine;
+            rtbMessages.Text += "You wake up in your home." + Environment.NewLine;
 
 
+            // Reset all values and clear all items and quests
+            _player.Inventory.Clear();
+            _player.Inventory.Add(new InventoryItem(World.ItemByID(World.ITEM_ID_RUSTY_SWORD), 1));
+            _player.Quests.Clear();
+            _player.Gold = 0;
+            _player.ExperiencePoints = 0;
+            _player.Level = 1;
+
+            UpdateUI();
+
+
+            // Move player to "Home"
+            MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
+            
+
+        }
+
+        private void UpdateUI()
+        {
+            lblHitPoints.Text = _player.CurrentHitPoints.ToString() + "/" + _player.MaximumHitPoints.ToString();
+            lblGold.Text = _player.Gold.ToString();
+            lblExperience.Text = _player.ExperiencePoints.ToString();
+            lblLevel.Text = _player.Level.ToString();
+
+            UpdateInventoryListInUI();
+            UpdateQuestListInUI();
+            UpdateWeaponListInUI();
+            UpdatePotionListInUI();
+
+            ScrollToBottomOfMessages();
+
+        }
     }
 }

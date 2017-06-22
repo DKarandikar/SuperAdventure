@@ -1,0 +1,4 @@
+C:\Users\danie\OneDrive\Programming\Visual Studio Projects\SuperAdventure\Engine\bin\Release\Engine.dll
+C:\Users\danie\OneDrive\Programming\Visual Studio Projects\SuperAdventure\Engine\bin\Release\Engine.pdb
+C:\Users\danie\OneDrive\Programming\Visual Studio Projects\SuperAdventure\Engine\obj\Release\Engine.dll
+C:\Users\danie\OneDrive\Programming\Visual Studio Projects\SuperAdventure\Engine\obj\Release\Engine.pdb

@@ -400,7 +400,7 @@ namespace SuperAdventure
             
         }
 
-        private void btnUsePotion_Click_1(object sender, EventArgs e)
+        private void btnUsePotion_Click(object sender, EventArgs e)
         {
             // Get the currently selected potion from the combobox
             HealingPotion potion = (HealingPotion)cboPotions.SelectedItem;

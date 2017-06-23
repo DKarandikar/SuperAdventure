@@ -50,6 +50,8 @@
             this.dgvInventory = new System.Windows.Forms.DataGridView();
             this.dgvQuests = new System.Windows.Forms.DataGridView();
             this.btnRestart = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.lblMonsterHitPoints = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInventory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvQuests)).BeginInit();
             this.SuspendLayout();
@@ -263,7 +265,7 @@
             // 
             // btnRestart
             // 
-            this.btnRestart.Location = new System.Drawing.Point(214, 15);
+            this.btnRestart.Location = new System.Drawing.Point(213, 90);
             this.btnRestart.Name = "btnRestart";
             this.btnRestart.Size = new System.Drawing.Size(75, 23);
             this.btnRestart.TabIndex = 21;
@@ -271,11 +273,31 @@
             this.btnRestart.UseVisualStyleBackColor = true;
             this.btnRestart.Click += new System.EventHandler(this.btnRestart_Click);
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(210, 19);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(96, 13);
+            this.label6.TabIndex = 22;
+            this.label6.Text = "Monster Hit Points:";
+            // 
+            // lblMonsterHitPoints
+            // 
+            this.lblMonsterHitPoints.AutoSize = true;
+            this.lblMonsterHitPoints.Location = new System.Drawing.Point(213, 46);
+            this.lblMonsterHitPoints.Name = "lblMonsterHitPoints";
+            this.lblMonsterHitPoints.Size = new System.Drawing.Size(35, 13);
+            this.lblMonsterHitPoints.TabIndex = 23;
+            this.lblMonsterHitPoints.Text = "label9";
+            // 
             // SuperAdventure
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(719, 651);
+            this.Controls.Add(this.lblMonsterHitPoints);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.btnRestart);
             this.Controls.Add(this.dgvQuests);
             this.Controls.Add(this.dgvInventory);
@@ -332,6 +354,8 @@
         private System.Windows.Forms.DataGridView dgvInventory;
         private System.Windows.Forms.DataGridView dgvQuests;
         private System.Windows.Forms.Button btnRestart;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label lblMonsterHitPoints;
     }
 }
 

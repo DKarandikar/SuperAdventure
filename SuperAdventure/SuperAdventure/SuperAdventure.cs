@@ -33,6 +33,17 @@ namespace SuperAdventure
             {
                 _player = Player.CreateDefaultPlayer();
             }
+
+            lblHitPoints.DataBindings.Add(
+            "Text", _player, "RatioHitPoints");
+            lblGold.DataBindings.Add(
+            "Text", _player, "Gold");
+            lblExperience.DataBindings.Add(
+            "Text", _player, "ExperiencePoints");
+            lblLevel.DataBindings.Add(
+            "Text", _player, "Level");
+
+
             MoveTo(_player.CurrentLocation);
             UpdateUI();
         }
@@ -299,10 +310,6 @@ namespace SuperAdventure
 
         private void UpdateUI()
         {
-            lblHitPoints.Text = _player.CurrentHitPoints.ToString() + "/" + _player.MaximumHitPoints.ToString();
-            lblGold.Text = _player.Gold.ToString();
-            lblExperience.Text = _player.ExperiencePoints.ToString();
-            lblLevel.Text = _player.Level.ToString();
 
             UpdateInventoryListInUI();
             UpdateQuestListInUI();

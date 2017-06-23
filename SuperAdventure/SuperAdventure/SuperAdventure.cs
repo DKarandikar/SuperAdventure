@@ -491,7 +491,17 @@ namespace SuperAdventure
 
         private void btnRestart_Click(object sender, EventArgs e)
         {
-            Gameover();
+            if (MessageBox.Show("Are you sure you want to reset all progress?", "Question",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                // Display message
+                rtbMessages.Text += Environment.NewLine;
+                rtbMessages.Text += "You have restarted" + Environment.NewLine;
+                rtbMessages.Text += Environment.NewLine;
+
+                // Restart the game
+                Gameover();
+            }
         }
     }
 }

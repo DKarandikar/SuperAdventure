@@ -58,5 +58,11 @@ namespace Engine
                 this, new PropertyChangedEventArgs(name));
             }
         }
+
+        public Item ToItem()
+        {
+            return new Engine.Item(_details.ID, _details.Name, _details.NamePlural);
+        }
     }
+
 }

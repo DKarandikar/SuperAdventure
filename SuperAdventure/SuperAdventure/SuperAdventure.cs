@@ -240,10 +240,10 @@ namespace SuperAdventure
             {
                 _currentMonster = null;
 
-                cboWeapons.Visible = _player.Weapons.Any();
-                cboPotions.Visible = _player.Potions.Any();
-                btnUseWeapon.Visible = _player.Weapons.Any();
-                btnUsePotion.Visible = _player.Potions.Any();
+                cboWeapons.Visible = false;
+                cboPotions.Visible = false;
+                btnUseWeapon.Visible = false;
+                btnUsePotion.Visible = false;
             }
 
             // Refresh UI
@@ -426,21 +426,23 @@ namespace SuperAdventure
                 rtbMessages.Text += "Let's begin again." + Environment.NewLine;
                 rtbMessages.Text += "You wake up in your home." + Environment.NewLine;
             }
-            
+
 
             // Reset all values and clear all items and quests
+
             _player.Inventory.Clear();
             _player.Inventory.Add(new InventoryItem(World.ItemByID(World.ITEM_ID_RUSTY_SWORD), 1));
             _player.Quests.Clear();
             _player.Gold = 0;
-            _player.AddExperiencePoints(- _player.ExperiencePoints);
+            _player.AddExperiencePoints(-_player.ExperiencePoints);
 
-            ScrollAndUpdateMonsterUI();
-
+            // Make sure all the databound objects update by calling this
+            _player.AllChange();
 
             // Move player to "Home"
             MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
-            
+            ScrollAndUpdateMonsterUI();
+
 
         }
 

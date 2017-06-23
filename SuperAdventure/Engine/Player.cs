@@ -77,7 +77,6 @@ namespace Engine
             Player player = new Player(10, 10, 20, 0);
             player.Inventory.Add(new InventoryItem(World.ItemByID(World.ITEM_ID_RUSTY_SWORD), 1));
             player.CurrentLocation = World.LocationByID(World.LOCATION_ID_HOME);
-
             return player;
         }
 
@@ -354,6 +353,16 @@ namespace Engine
             }
 
             return playerData.InnerXml; // The XML document, as a string, so we can save the data to disk
+        }
+
+        public void AllChange()
+        {
+            OnPropertyChanged("Weapons");
+            OnPropertyChanged("Potions");
+            OnPropertyChanged("Gold");
+            OnPropertyChanged("ExperiencePoints");
+            OnPropertyChanged("Level");
+
         }
     }
 }

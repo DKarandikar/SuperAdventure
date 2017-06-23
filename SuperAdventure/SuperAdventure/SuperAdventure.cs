@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 using Engine;
 
@@ -14,20 +15,29 @@ namespace SuperAdventure
 {
     public partial class SuperAdventure : Form
     {
+        // Class level constants
         private Player _player;
         private Monster _currentMonster;
+        private const string PLAYER_DATA_FILE_NAME = "PlayerData.xml";
 
+        // Constructor
         public SuperAdventure()
         {
             InitializeComponent();
-
-            _player = new Player(10, 10, 20, 0);
-            MoveTo(World.LocationByID(World.LOCATION_ID_HOME));
-            _player.Inventory.Add(new InventoryItem(World.ItemByID(World.ITEM_ID_RUSTY_SWORD), 1));
-
+            if (File.Exists(PLAYER_DATA_FILE_NAME))
+            {
+                _player = Player.CreatePlayerFromXmlString(
+                File.ReadAllText(PLAYER_DATA_FILE_NAME));
+            }
+            else
+            {
+                _player = Player.CreateDefaultPlayer();
+            }
+            MoveTo(_player.CurrentLocation);
             UpdateUI();
         }
 
+        // Methods and functions
         private void btnNorth_Click(object sender, EventArgs e)
         {
             MoveTo(_player.CurrentLocation.LocationToNorth);
@@ -432,11 +442,13 @@ namespace SuperAdventure
 
         private void Gameover()
         {
-            // Display message
-            rtbMessages.Text += "The " + _currentMonster.Name + " killed you." + Environment.NewLine;
-            rtbMessages.Text += "Let's begin again." + Environment.NewLine;
-            rtbMessages.Text += "You wake up in your home." + Environment.NewLine;
-
+            if (_player.CurrentHitPoints <= 0) {
+                // Display message
+                rtbMessages.Text += "The " + _currentMonster.Name + " killed you." + Environment.NewLine;
+                rtbMessages.Text += "Let's begin again." + Environment.NewLine;
+                rtbMessages.Text += "You wake up in your home." + Environment.NewLine;
+            }
+            
 
             // Reset all values and clear all items and quests
             _player.Inventory.Clear();
@@ -468,6 +480,18 @@ namespace SuperAdventure
 
             ScrollToBottomOfMessages();
 
+        }
+
+        private void SuperAdventure_FormClosing(
+                object sender, FormClosingEventArgs e)
+        {
+            File.WriteAllText(
+            PLAYER_DATA_FILE_NAME, _player.ToXmlString());
+        }
+
+        private void btnRestart_Click(object sender, EventArgs e)
+        {
+            Gameover();
         }
     }
 }

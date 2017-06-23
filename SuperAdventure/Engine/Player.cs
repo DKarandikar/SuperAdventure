@@ -11,7 +11,7 @@ namespace Engine
     {
         // All class attributes
         public int Gold { get; set; }
-        public int ExperiencePoints { get; set; }
+        public int ExperiencePoints { get; private set; }
 
         public int Level
         {
@@ -40,6 +40,12 @@ namespace Engine
             player.CurrentLocation = World.LocationByID(World.LOCATION_ID_HOME);
 
             return player;
+        }
+
+        public void AddExperiencePoints(int experiencePointsToAdd)
+        {
+            ExperiencePoints += experiencePointsToAdd;
+            MaximumHitPoints = (Level * 10);
         }
 
         public static Player CreatePlayerFromXmlString(string xmlPlayerData)

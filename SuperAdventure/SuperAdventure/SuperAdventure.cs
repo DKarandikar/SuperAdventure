@@ -119,14 +119,16 @@ namespace SuperAdventure
                             rtbMessages.Text += "You receive: " + Environment.NewLine;
                             rtbMessages.Text += newLocation.QuestAvailableHere.RewardExperiencePoints.ToString() + " experience points" + Environment.NewLine;
                             rtbMessages.Text += newLocation.QuestAvailableHere.RewardGold.ToString() + " gold" + Environment.NewLine;
-                            rtbMessages.Text += newLocation.QuestAvailableHere.RewardItem.Name + Environment.NewLine;
+                            //rtbMessages.Text += newLocation.QuestAvailableHere.RewardItem.Name + Environment.NewLine;
+                            newLocation.QuestAvailableHere.RewardItems.ForEach(item => rtbMessages.Text += item.Name + Environment.NewLine);
                             rtbMessages.Text += Environment.NewLine;
 
-                            _player.ExperiencePoints += newLocation.QuestAvailableHere.RewardExperiencePoints;
+                            _player.AddExperiencePoints(newLocation.QuestAvailableHere.RewardExperiencePoints);
                             _player.Gold += newLocation.QuestAvailableHere.RewardGold;
 
                             // Add the reward item to the player's inventory
-                            _player.AddItemToInventory(newLocation.QuestAvailableHere.RewardItem);
+                            //_player.AddItemToInventory(newLocation.QuestAvailableHere.RewardItem);
+                            newLocation.QuestAvailableHere.RewardItems.ForEach(item => _player.AddItemToInventory(item));
 
                             // Mark the quest as completed
                             _player.MarkQuestCompleted(newLocation.QuestAvailableHere);
@@ -333,7 +335,7 @@ namespace SuperAdventure
                 rtbMessages.Text += "You defeated the " + _currentMonster.Name + Environment.NewLine;
 
                 // Give player experience points for killing the monster
-                _player.ExperiencePoints += _currentMonster.RewardExperiencePoints;
+                _player.AddExperiencePoints(_currentMonster.RewardExperiencePoints);
                 rtbMessages.Text += "You receive " + _currentMonster.RewardExperiencePoints.ToString() + " experience points" + Environment.NewLine;
 
                 // Give player gold for killing the monster 
@@ -480,7 +482,7 @@ namespace SuperAdventure
             _player.Inventory.Add(new InventoryItem(World.ItemByID(World.ITEM_ID_RUSTY_SWORD), 1));
             _player.Quests.Clear();
             _player.Gold = 0;
-            _player.ExperiencePoints = 0;
+            _player.AddExperiencePoints(- _player.ExperiencePoints);
 
             UpdateUI();
 

@@ -90,12 +90,12 @@ namespace Engine
                 new Quest(
                     QUEST_ID_CLEAR_ALCHEMIST_GARDEN,
                     "Clear the alchemist's garden",
-                    "Kill rats in the alchemist's garden and bring back 3 rat tails. You will receive a healing potion and 10 gold pieces.", 20, 10);
+                    "Kill rats in the alchemist's garden and bring back 3 rat tails. You will receive a healing potion, a new sword, and 10 gold pieces.", 20, 10);
 
             clearAlchemistGarden.QuestCompletionItems.Add(new QuestCompletionItem(ItemByID(ITEM_ID_RAT_TAIL), 3));
 
-            clearAlchemistGarden.RewardItem = ItemByID(ITEM_ID_HEALING_POTION);
-            clearAlchemistGarden.RewardItem = ItemByID(ITEM_ID_SHINY_SWORD);
+            clearAlchemistGarden.RewardItems.Add(ItemByID(ITEM_ID_HEALING_POTION));
+            clearAlchemistGarden.RewardItems.Add(ItemByID(ITEM_ID_SHINY_SWORD));
 
             Quest clearFarmersField =
                 new Quest(
@@ -105,7 +105,7 @@ namespace Engine
 
             clearFarmersField.QuestCompletionItems.Add(new QuestCompletionItem(ItemByID(ITEM_ID_SNAKE_FANG), 3));
 
-            clearFarmersField.RewardItem = ItemByID(ITEM_ID_ADVENTURER_PASS);
+            clearFarmersField.RewardItems.Add(ItemByID(ITEM_ID_ADVENTURER_PASS));
 
             Quests.Add(clearAlchemistGarden);
             Quests.Add(clearFarmersField);

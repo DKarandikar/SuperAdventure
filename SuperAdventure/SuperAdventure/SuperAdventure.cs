@@ -318,6 +318,20 @@ namespace SuperAdventure
 
             ScrollToBottomOfMessages();
 
+            if ( _currentMonster != null)
+            {
+                label6.Visible = true;
+                lblMonsterHitPoints.Visible = true;
+                lblMonsterHitPoints.DataBindings.Clear();
+                lblMonsterHitPoints.DataBindings.Add(
+                    "Text", _currentMonster, "RatioHitPoints");
+            }
+            else
+            {
+                label6.Visible = false;
+                lblMonsterHitPoints.Visible = false;
+            }
+
         }
 
         private void btnUseWeapon_Click_1(object sender, EventArgs e)

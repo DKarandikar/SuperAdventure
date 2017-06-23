@@ -9,6 +9,7 @@ namespace Engine
 {
     public class LivingCreature : INotifyPropertyChanged
     {
+        // Class Variables
         private int _currentHitPoints;
         public int CurrentHitPoints
         {
@@ -16,14 +17,16 @@ namespace Engine
             set
             {
                 _currentHitPoints = value;
-                RatioHitPoints = _currentHitPoints.ToString() + "/" + MaximumHitPoints.ToString();
+                //RatioHitPoints = _currentHitPoints.ToString() + "/" + MaximumHitPoints.ToString();
                 OnPropertyChanged("RatioHitPoints");
             }
         }
         public int MaximumHitPoints { get; set; }
 
-        public string RatioHitPoints { get  ; private set; }
+        public string RatioHitPoints { get { return _currentHitPoints.ToString() + "/" + MaximumHitPoints.ToString(); } }
 
+
+        // Constructor
         public LivingCreature(int currentHitPoints,
             int maximumHitPoints)
         {
@@ -31,6 +34,8 @@ namespace Engine
             MaximumHitPoints = maximumHitPoints;
         }
 
+
+        // Databindings stuff
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string name)

@@ -244,16 +244,25 @@ namespace SuperAdventure
             }
             if (weapons.Count == 0)
             {
-                // The player doesn't have any weapons, so hide the weapon                combobox and "Use" button
+                // The player doesn't have any weapons, so hide the weapon combobox and "Use" button
                 cboWeapons.Visible = false;
                 btnUseWeapon.Visible = false;
             }
             else
             {
+                cboWeapons.SelectedIndexChanged -= cboWeapons_SelectedIndexChanged;
                 cboWeapons.DataSource = weapons;
+                cboWeapons.SelectedIndexChanged += cboWeapons_SelectedIndexChanged;
                 cboWeapons.DisplayMember = "Name";
                 cboWeapons.ValueMember = "ID";
-                cboWeapons.SelectedIndex = 0;
+                if (_player.CurrentWeapon != null)
+                {
+                    cboWeapons.SelectedItem = _player.CurrentWeapon;
+                }
+                else
+                {
+                    cboWeapons.SelectedIndex = 0;
+                }
             }
         }
 
@@ -284,6 +293,22 @@ namespace SuperAdventure
                 cboPotions.ValueMember = "ID";
                 cboPotions.SelectedIndex = 0;
             }
+        }
+
+        private void UpdateUI()
+        {
+            lblHitPoints.Text = _player.CurrentHitPoints.ToString() + "/" + _player.MaximumHitPoints.ToString();
+            lblGold.Text = _player.Gold.ToString();
+            lblExperience.Text = _player.ExperiencePoints.ToString();
+            lblLevel.Text = _player.Level.ToString();
+
+            UpdateInventoryListInUI();
+            UpdateQuestListInUI();
+            UpdateWeaponListInUI();
+            UpdatePotionListInUI();
+
+            ScrollToBottomOfMessages();
+
         }
 
         private void btnUseWeapon_Click_1(object sender, EventArgs e)
@@ -466,24 +491,7 @@ namespace SuperAdventure
 
         }
 
-        private void UpdateUI()
-        {
-            lblHitPoints.Text = _player.CurrentHitPoints.ToString() + "/" + _player.MaximumHitPoints.ToString();
-            lblGold.Text = _player.Gold.ToString();
-            lblExperience.Text = _player.ExperiencePoints.ToString();
-            lblLevel.Text = _player.Level.ToString();
-
-            UpdateInventoryListInUI();
-            UpdateQuestListInUI();
-            UpdateWeaponListInUI();
-            UpdatePotionListInUI();
-
-            ScrollToBottomOfMessages();
-
-        }
-
-        private void SuperAdventure_FormClosing(
-                object sender, FormClosingEventArgs e)
+        private void SuperAdventure_FormClosing(object sender, FormClosingEventArgs e)
         {
             File.WriteAllText(
             PLAYER_DATA_FILE_NAME, _player.ToXmlString());
@@ -502,6 +510,11 @@ namespace SuperAdventure
                 // Restart the game
                 Gameover();
             }
+        }
+
+        private void cboWeapons_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _player.CurrentWeapon = (Weapon)cboWeapons.SelectedItem;
         }
     }
 }

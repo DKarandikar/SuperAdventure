@@ -241,7 +241,7 @@ namespace SuperAdventure
         private void btnMap_Click(object sender, EventArgs e)
         {
             //Create a map
-            _map = new Map();
+            _map = new Map(_player);
             
             // Show the map form
             _map.Show();

@@ -11,6 +11,8 @@ namespace Engine
         public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
+        public int XRef { get; set; }
+        public int YRef { get; set; }
         public Item ItemRequiredToEnter { get; set; }
         public Quest QuestAvailableHere { get; set; }
         public Monster MonsterLivingHere { get; set; }
@@ -19,7 +21,7 @@ namespace Engine
         public Location LocationToSouth { get; set; }
         public Location LocationToWest { get; set; }
 
-        public Location(int id, string name, string description,
+        public Location(int id, string name, string description, int xRef, int yRef,
         Item itemRequiredToEnter = null,
             Quest questAvailableHere = null,
                 Monster monsterLivingHere = null)
@@ -27,6 +29,8 @@ namespace Engine
             ID = id;
             Name = name;
             Description = description;
+            XRef = xRef;
+            YRef = yRef;
             ItemRequiredToEnter = itemRequiredToEnter;
             QuestAvailableHere = questAvailableHere;
             MonsterLivingHere = monsterLivingHere;

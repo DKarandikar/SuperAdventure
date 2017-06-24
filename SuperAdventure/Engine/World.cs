@@ -138,67 +138,43 @@ namespace Engine
             Location spiderField = new Location(LOCATION_ID_SPIDER_FIELD, "Forest", "You see spider webs covering covering the trees in this forest.",3,-1);
             spiderField.MonsterLivingHere = MonsterByID(MONSTER_ID_GIANT_SPIDER);
 
-            // Add to Temporary List
+            //Add to Temporary List
 
-            //TempLocations.Add(home);
-            //TempLocations.Add(townSquare);
-            //TempLocations.Add(guardPost);
-            //TempLocations.Add(alchemistHut);
-            //TempLocations.Add(alchemistsGarden);
-            //TempLocations.Add(farmhouse);
-            //TempLocations.Add(farmersField);
-            //TempLocations.Add(bridge);
-            //TempLocations.Add(spiderField);
+            TempLocations.Add(home);
+            TempLocations.Add(townSquare);
+            TempLocations.Add(guardPost);
+            TempLocations.Add(alchemistHut);
+            TempLocations.Add(alchemistsGarden);
+            TempLocations.Add(farmhouse);
+            TempLocations.Add(farmersField);
+            TempLocations.Add(bridge);
+            TempLocations.Add(spiderField);
 
-            // Link the locations together
+            //Link the locations together automatically
 
-            //foreach (Location loc in TempLocations)
-            //{
-            //    foreach (Location loc2 in TempLocations)
-            //    {
-            //        if ((loc.XRef == loc2.XRef) && (loc.YRef == loc2.YRef + 1))
-            //        {
-            //            loc.LocationToNorth = loc2;
-            //        }
-            //        if ((loc.XRef == loc2.XRef) && (loc.YRef == loc2.YRef - 1))
-            //        {
-            //            loc.LocationToSouth = loc2;
-            //        }
-            //        if ((loc.XRef == loc2.XRef - 1) && (loc.YRef == loc2.YRef))
-            //        {
-            //            loc.LocationToEast= loc2;
-            //        }
-            //        if ((loc.XRef == loc2.XRef + 1) && (loc.YRef == loc2.YRef))
-            //        {
-            //            loc.LocationToWest = loc2;
-            //        }
-            //    }
-            //}
+            foreach (Location loc in TempLocations)
+            {
+                foreach (Location loc2 in TempLocations)
+                {
+                    if ((loc.XRef == loc2.XRef) && (loc.YRef == loc2.YRef + 1))
+                    {
+                        loc.LocationToNorth = loc2;
+                    }
+                    if ((loc.XRef == loc2.XRef) && (loc.YRef == loc2.YRef - 1))
+                    {
+                        loc.LocationToSouth = loc2;
+                    }
+                    if ((loc.XRef == loc2.XRef - 1) && (loc.YRef == loc2.YRef))
+                    {
+                        loc.LocationToEast = loc2;
+                    }
+                    if ((loc.XRef == loc2.XRef + 1) && (loc.YRef == loc2.YRef))
+                    {
+                        loc.LocationToWest = loc2;
+                    }
+                }
+            }
 
-            home.LocationToNorth = townSquare;
-
-            townSquare.LocationToNorth = alchemistHut;
-            townSquare.LocationToSouth = home;
-            townSquare.LocationToEast = guardPost;
-            townSquare.LocationToWest = farmhouse;
-
-            farmhouse.LocationToEast = townSquare;
-            farmhouse.LocationToWest = farmersField;
-
-            farmersField.LocationToEast = farmhouse;
-
-            alchemistHut.LocationToSouth = townSquare;
-            alchemistHut.LocationToNorth = alchemistsGarden;
-
-            alchemistsGarden.LocationToSouth = alchemistHut;
-
-            guardPost.LocationToEast = bridge;
-            guardPost.LocationToWest = townSquare;
-
-            bridge.LocationToWest = guardPost;
-            bridge.LocationToEast = spiderField;
-
-            spiderField.LocationToWest = bridge;
 
             // Add the locations to the static list
             Locations.Add(home);

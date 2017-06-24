@@ -23,6 +23,15 @@ namespace SuperAdventure
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
+            foreach (Location loc in World.Locations)
+            {
+                e.Graphics.DrawRectangle(Pens.Black,
+                    250 + (50 * loc.XRef),
+                    250 + (50 * loc.YRef), 50, 50);
+                
+                e.Graphics.DrawString(loc.Name, SystemFonts.DefaultFont, Brushes.Red, new RectangleF(250 + (50 * loc.XRef), 250 + (50 * loc.YRef), 50, 50));
+
+            }
 
         }
     }

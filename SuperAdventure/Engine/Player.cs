@@ -92,6 +92,7 @@ namespace Engine
             Player player = new Player(10, 10, 20, 0);
             player.Inventory.Add(new InventoryItem(World.ItemByID(World.ITEM_ID_RUSTY_SWORD), 1));
             player.CurrentLocation = World.LocationByID(World.LOCATION_ID_HOME);
+            //player.MoveTo(player.CurrentLocation);
             return player;
         }
 
@@ -140,7 +141,7 @@ namespace Engine
 
                     player.Quests.Add(playerQuest);
                 }
-
+                //player.MoveTo(player.CurrentLocation);
                 return player;
             }
             catch
@@ -279,91 +280,6 @@ namespace Engine
             }
         }
 
-        public string ToXmlString()
-        {
-            XmlDocument playerData = new XmlDocument();
-
-            // Create the top-level XML node
-            XmlNode player = playerData.CreateElement("Player");
-            playerData.AppendChild(player);
-
-            // Create the "Stats" child node to hold the other player statistics nodes
-            XmlNode stats = playerData.CreateElement("Stats");
-            player.AppendChild(stats);
-
-            // Create the child nodes for the "Stats" node
-            XmlNode currentHitPoints = playerData.CreateElement("CurrentHitPoints");
-            currentHitPoints.AppendChild(playerData.CreateTextNode(this.CurrentHitPoints.ToString()));
-            stats.AppendChild(currentHitPoints);
-
-            XmlNode maximumHitPoints = playerData.CreateElement("MaximumHitPoints");
-            maximumHitPoints.AppendChild(playerData.CreateTextNode(this.MaximumHitPoints.ToString()));
-            stats.AppendChild(maximumHitPoints);
-
-            XmlNode gold = playerData.CreateElement("Gold");
-            gold.AppendChild(playerData.CreateTextNode(this.Gold.ToString()));
-            stats.AppendChild(gold);
-
-            XmlNode experiencePoints = playerData.CreateElement("ExperiencePoints");
-            experiencePoints.AppendChild(playerData.CreateTextNode(this.ExperiencePoints.ToString()));
-            stats.AppendChild(experiencePoints);
-
-            XmlNode currentLocation = playerData.CreateElement("CurrentLocation");
-            currentLocation.AppendChild(playerData.CreateTextNode(this.CurrentLocation.ID.ToString()));
-            stats.AppendChild(currentLocation);
-
-            if (CurrentWeapon != null)
-            {
-                XmlNode currentWeapon =
-                playerData.CreateElement("CurrentWeapon");
-                currentWeapon.AppendChild(
-                playerData.CreateTextNode(this.CurrentWeapon.ID.ToString()));
-                stats.AppendChild(currentWeapon);
-            }
-
-            // Create the "InventoryItems" child node to hold each InventoryItem node
-            XmlNode inventoryItems = playerData.CreateElement("InventoryItems");
-            player.AppendChild(inventoryItems);
-
-            // Create an "InventoryItem" node for each item in the player's inventory
-            foreach (InventoryItem item in this.Inventory)
-            {
-                XmlNode inventoryItem = playerData.CreateElement("InventoryItem");
-
-                XmlAttribute idAttribute = playerData.CreateAttribute("ID");
-                idAttribute.Value = item.Details.ID.ToString();
-                inventoryItem.Attributes.Append(idAttribute);
-
-                XmlAttribute quantityAttribute = playerData.CreateAttribute("Quantity");
-                quantityAttribute.Value = item.Quantity.ToString();
-                inventoryItem.Attributes.Append(quantityAttribute);
-
-                inventoryItems.AppendChild(inventoryItem);
-            }
-
-            // Create the "PlayerQuests" child node to hold each PlayerQuest node
-            XmlNode playerQuests = playerData.CreateElement("PlayerQuests");
-            player.AppendChild(playerQuests);
-
-            // Create a "PlayerQuest" node for each quest the player has acquired
-            foreach (PlayerQuest quest in this.Quests)
-            {
-                XmlNode playerQuest = playerData.CreateElement("PlayerQuest");
-
-                XmlAttribute idAttribute = playerData.CreateAttribute("ID");
-                idAttribute.Value = quest.Details.ID.ToString();
-                playerQuest.Attributes.Append(idAttribute);
-
-                XmlAttribute isCompletedAttribute = playerData.CreateAttribute("IsCompleted");
-                isCompletedAttribute.Value = quest.IsCompleted.ToString();
-                playerQuest.Attributes.Append(isCompletedAttribute);
-
-                playerQuests.AppendChild(playerQuest);
-            }
-
-            return playerData.InnerXml; // The XML document, as a string, so we can save the data to disk
-        }
-
         public void AllChange()
         {
             OnPropertyChanged("Weapons");
@@ -371,6 +287,8 @@ namespace Engine
             OnPropertyChanged("Gold");
             OnPropertyChanged("ExperiencePoints");
             OnPropertyChanged("Level");
+            OnPropertyChanged("CurrentLocation");
+            OnPropertyChanged("CurrentMonster");
 
         }
 
@@ -496,7 +414,7 @@ namespace Engine
 
 
             }
-
+            OnPropertyChanged("CurrentMonster");
             // Refresh UI
             //ScrollAndUpdateMonsterUI();
         }
@@ -529,7 +447,6 @@ namespace Engine
                 MoveTo(CurrentLocation.LocationToWest);
             }
         }
-
 
         public void UseWeapon(Weapon weapon)
         {
@@ -700,6 +617,91 @@ namespace Engine
             MoveHome();
 
 
+        }
+
+        public string ToXmlString()
+        {
+            XmlDocument playerData = new XmlDocument();
+
+            // Create the top-level XML node
+            XmlNode player = playerData.CreateElement("Player");
+            playerData.AppendChild(player);
+
+            // Create the "Stats" child node to hold the other player statistics nodes
+            XmlNode stats = playerData.CreateElement("Stats");
+            player.AppendChild(stats);
+
+            // Create the child nodes for the "Stats" node
+            XmlNode currentHitPoints = playerData.CreateElement("CurrentHitPoints");
+            currentHitPoints.AppendChild(playerData.CreateTextNode(this.CurrentHitPoints.ToString()));
+            stats.AppendChild(currentHitPoints);
+
+            XmlNode maximumHitPoints = playerData.CreateElement("MaximumHitPoints");
+            maximumHitPoints.AppendChild(playerData.CreateTextNode(this.MaximumHitPoints.ToString()));
+            stats.AppendChild(maximumHitPoints);
+
+            XmlNode gold = playerData.CreateElement("Gold");
+            gold.AppendChild(playerData.CreateTextNode(this.Gold.ToString()));
+            stats.AppendChild(gold);
+
+            XmlNode experiencePoints = playerData.CreateElement("ExperiencePoints");
+            experiencePoints.AppendChild(playerData.CreateTextNode(this.ExperiencePoints.ToString()));
+            stats.AppendChild(experiencePoints);
+
+            XmlNode currentLocation = playerData.CreateElement("CurrentLocation");
+            currentLocation.AppendChild(playerData.CreateTextNode(this.CurrentLocation.ID.ToString()));
+            stats.AppendChild(currentLocation);
+
+            if (CurrentWeapon != null)
+            {
+                XmlNode currentWeapon =
+                playerData.CreateElement("CurrentWeapon");
+                currentWeapon.AppendChild(
+                playerData.CreateTextNode(this.CurrentWeapon.ID.ToString()));
+                stats.AppendChild(currentWeapon);
+            }
+
+            // Create the "InventoryItems" child node to hold each InventoryItem node
+            XmlNode inventoryItems = playerData.CreateElement("InventoryItems");
+            player.AppendChild(inventoryItems);
+
+            // Create an "InventoryItem" node for each item in the player's inventory
+            foreach (InventoryItem item in this.Inventory)
+            {
+                XmlNode inventoryItem = playerData.CreateElement("InventoryItem");
+
+                XmlAttribute idAttribute = playerData.CreateAttribute("ID");
+                idAttribute.Value = item.Details.ID.ToString();
+                inventoryItem.Attributes.Append(idAttribute);
+
+                XmlAttribute quantityAttribute = playerData.CreateAttribute("Quantity");
+                quantityAttribute.Value = item.Quantity.ToString();
+                inventoryItem.Attributes.Append(quantityAttribute);
+
+                inventoryItems.AppendChild(inventoryItem);
+            }
+
+            // Create the "PlayerQuests" child node to hold each PlayerQuest node
+            XmlNode playerQuests = playerData.CreateElement("PlayerQuests");
+            player.AppendChild(playerQuests);
+
+            // Create a "PlayerQuest" node for each quest the player has acquired
+            foreach (PlayerQuest quest in this.Quests)
+            {
+                XmlNode playerQuest = playerData.CreateElement("PlayerQuest");
+
+                XmlAttribute idAttribute = playerData.CreateAttribute("ID");
+                idAttribute.Value = quest.Details.ID.ToString();
+                playerQuest.Attributes.Append(idAttribute);
+
+                XmlAttribute isCompletedAttribute = playerData.CreateAttribute("IsCompleted");
+                isCompletedAttribute.Value = quest.IsCompleted.ToString();
+                playerQuest.Attributes.Append(isCompletedAttribute);
+
+                playerQuests.AppendChild(playerQuest);
+            }
+
+            return playerData.InnerXml; // The XML document, as a string, so we can save the data to disk
         }
     }
 }

@@ -17,7 +17,6 @@ namespace Engine
             set
             {
                 _currentHitPoints = value;
-                //RatioHitPoints = _currentHitPoints.ToString() + "/" + MaximumHitPoints.ToString();
                 OnPropertyChanged("RatioHitPoints");
             }
         }

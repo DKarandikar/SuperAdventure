@@ -52,6 +52,7 @@
             this.btnRestart = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.lblMonsterHitPoints = new System.Windows.Forms.Label();
+            this.btnMap = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvInventory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvQuests)).BeginInit();
             this.SuspendLayout();
@@ -291,11 +292,22 @@
             this.lblMonsterHitPoints.TabIndex = 23;
             this.lblMonsterHitPoints.Text = "label9";
             // 
+            // btnMap
+            // 
+            this.btnMap.Location = new System.Drawing.Point(620, 622);
+            this.btnMap.Name = "btnMap";
+            this.btnMap.Size = new System.Drawing.Size(75, 23);
+            this.btnMap.TabIndex = 24;
+            this.btnMap.Text = "Map";
+            this.btnMap.UseVisualStyleBackColor = true;
+            this.btnMap.Click += new System.EventHandler(this.btnMap_Click);
+            // 
             // SuperAdventure
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(719, 651);
+            this.Controls.Add(this.btnMap);
             this.Controls.Add(this.lblMonsterHitPoints);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.btnRestart);
@@ -356,6 +368,7 @@
         private System.Windows.Forms.Button btnRestart;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label lblMonsterHitPoints;
+        private System.Windows.Forms.Button btnMap;
     }
 }
 

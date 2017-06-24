@@ -18,6 +18,7 @@ namespace SuperAdventure
         // Class level constants
         private Player _player;
         private const string PLAYER_DATA_FILE_NAME = "PlayerData.xml";
+        private Map _map;
 
         // Constructor
         public SuperAdventure()
@@ -41,6 +42,9 @@ namespace SuperAdventure
             "Text", _player, "ExperiencePoints");
             lblLevel.DataBindings.Add(
             "Text", _player, "Level");
+
+            label6.Visible = false;
+            lblMonsterHitPoints.Visible = false;
 
             dgvInventory.RowHeadersVisible = false;
             dgvInventory.AutoGenerateColumns = false;
@@ -88,8 +92,7 @@ namespace SuperAdventure
 
             _player.OnMessage += DisplayMessage;
 
-            _player.MoveHome();
-            ScrollAndUpdateMonsterUI();
+            _player.AllChange();
         }
 
         // Methods and functions
@@ -123,28 +126,6 @@ namespace SuperAdventure
             _player.MoveWest();
         }
 
-
-
-        private void ScrollAndUpdateMonsterUI()
-        {
-            ScrollToBottomOfMessages();
-
-            if ( _player._currentMonster != null)
-            {
-                label6.Visible = true;
-                lblMonsterHitPoints.Visible = true;
-                lblMonsterHitPoints.DataBindings.Clear();
-                lblMonsterHitPoints.DataBindings.Add(
-                    "Text", _player._currentMonster, "RatioHitPoints");
-            }
-            else
-            {
-                label6.Visible = false;
-                lblMonsterHitPoints.Visible = false;
-            }
-
-        }
-
         private void btnUseWeapon_Click_1(object sender, EventArgs e)
         {
             // Get the currently selected weapon from the
@@ -152,20 +133,13 @@ namespace SuperAdventure
             Weapon currentWeapon = (Weapon)cboWeapons.SelectedItem;
             _player.UseWeapon(currentWeapon);
         }
+
         private void btnUsePotion_Click(object sender, EventArgs e)
         {
             // Get the currently selected potion from the combobox
             HealingPotion potion = (HealingPotion)cboPotions.SelectedItem;
             _player.UsePotion(potion);
         }
-
-        private void ScrollToBottomOfMessages()
-        {
-            rtbMessages.SelectionStart = rtbMessages.Text.Length;
-            rtbMessages.ScrollToCaret();
-        }
-
- 
 
         private void SuperAdventure_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -222,7 +196,7 @@ namespace SuperAdventure
 
                 // Display current location name and description
                 rtbLocation.Text = _player.CurrentLocation.Name + Environment.NewLine;
-                rtbLocation.Text += _player.CurrentLocation.Description +  Environment.NewLine;
+                rtbLocation.Text += _player.CurrentLocation.Description + Environment.NewLine;
 
                 if (_player.CurrentLocation.MonsterLivingHere == null)
                 {
@@ -237,13 +211,40 @@ namespace SuperAdventure
                     cboPotions.Visible = _player.Potions.Any();
                     btnUseWeapon.Visible = _player.Weapons.Any();
                     btnUsePotion.Visible = _player.Potions.Any();
+
                 }
+            }
+            if (propertyChangedEventArgs.PropertyName == "CurrentMonster")
+            {
+                if (_player._currentMonster != null)
+                {
+                    label6.Visible = true;
+                    lblMonsterHitPoints.Visible = true;
+                    lblMonsterHitPoints.DataBindings.Clear();
+                    lblMonsterHitPoints.DataBindings.Add(
+                        "Text", _player._currentMonster, "RatioHitPoints");
+                }
+                else
+                {
+                    label6.Visible = false;
+                    lblMonsterHitPoints.Visible = false;
+                }
+
             }
         }
 
         private void cboWeapons_SelectedIndexChanged(object sender, EventArgs e)
         {
             _player.CurrentWeapon = (Weapon)cboWeapons.SelectedItem;
+        }
+
+        private void btnMap_Click(object sender, EventArgs e)
+        {
+            //Create a map
+            _map = new Map();
+            
+            // Show the map form
+            _map.Show();
         }
     }
 }

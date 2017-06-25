@@ -52,6 +52,7 @@ namespace SuperAdventure
             dgvInventory.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "Name",
+                Name = "Name",
                 Width = 197,
                 DataPropertyName = "Description"
             });
@@ -67,12 +68,14 @@ namespace SuperAdventure
             dgvQuests.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "Name",
+                Name = "Name",
                 Width = 197,
                 DataPropertyName = "Name"
             });
             dgvQuests.Columns.Add(new DataGridViewTextBoxColumn
             {
                 HeaderText = "Done?",
+                Name = "Done?",
                 DataPropertyName = "IsCompleted"
             });
 
@@ -245,6 +248,94 @@ namespace SuperAdventure
             
             // Show the map form
             _map.Show();
+        }
+
+
+        private void dgvQuests_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            String messageText;
+
+            if (e.ColumnIndex == 0) // Only works for the Name Column
+            {
+                messageText = dgvQuests.Rows[e.RowIndex].Cells["Name"].Value.ToString(); 
+                foreach (Quest quest in World.Quests)
+                {
+                    if (quest.Name == messageText)  //Uniquely picks out the quest that was clicked on
+                    {
+                        messageText += Environment.NewLine;
+                        messageText += Environment.NewLine;
+                        messageText += "You require ";
+                        foreach (QuestCompletionItem item in quest.QuestCompletionItems)
+                        {
+                            messageText += item.Quantity.ToString() + " ";
+                            if (item.Quantity == 1)
+                            {
+                                messageText += item.Details.Name;
+                            }
+                            else
+                            {
+                                messageText += item.Details.NamePlural;
+                            }
+                            messageText += " and ";
+                        }
+                        // Remove final "and"
+                        messageText = messageText.Substring(0, messageText.Length - 5);
+
+                        messageText += Environment.NewLine;
+                        messageText += "You will receive ";
+                        foreach (Item item in quest.RewardItems)
+                        {
+                            messageText += item.Name;
+                            messageText += " and ";
+                        }
+                        //Again, remove "and" 
+                        messageText = messageText.Substring(0, messageText.Length - 5);
+
+                    }
+                }
+                MessageBox.Show(messageText,"Quest Info");
+            }
+        }
+
+        private void dgvInventory_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            String messageText;
+
+            if (e.ColumnIndex == 0) // Only works for the Name Column
+            {
+                messageText = dgvInventory.Rows[e.RowIndex].Cells["Name"].Value.ToString();
+
+                foreach (Weapon weapon in World.Items.OfType<Weapon>())
+                {
+                    if (weapon.Name == messageText)
+                    {
+                        messageText += Environment.NewLine;
+                        messageText += Environment.NewLine;
+                        messageText += "Deals " + weapon.MinimumDamage.ToString() + "-" + weapon.MaximumDamage.ToString() + " damage";
+                    }
+                }
+                foreach (HealingPotion potion in World.Items.OfType<HealingPotion>())
+                {
+                    if (potion.Name == messageText)
+                    {
+                        messageText += Environment.NewLine;
+                        messageText += Environment.NewLine;
+                        messageText += "Heals " + potion.AmountToHeal.ToString() + " damage";
+                    }
+                }
+                foreach (Item item in World.Items.OfType<Item>())
+                {
+                    if ((item.Name == messageText) || (item.NamePlural == messageText))
+                    {
+                        messageText += Environment.NewLine;
+                        messageText += Environment.NewLine;
+                        messageText += "Just a collectible";
+                    }
+                }
+                MessageBox.Show(messageText, "Item Info");
+
+                //(MessageBox.Show("Are you sure you want to reset all progress?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            }
         }
     }
 }

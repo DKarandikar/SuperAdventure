@@ -1,2 +1,2 @@
 # SuperAdventure
-C# work on an RPG tutorial from https://scottlilly.com/learn-c-by-building-a-simple-rpg-index/
+C# practice on an RPG tutorial using Winforms from https://scottlilly.com/learn-c-by-building-a-simple-rpg-index/
